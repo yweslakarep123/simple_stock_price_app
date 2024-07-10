@@ -26,8 +26,8 @@ st.markdown("""
 # Title
 st.markdown('<p class="big-font">Simple Stock Price App</p>', unsafe_allow_html=True)
 
-# Sidebar
-st.sidebar.header("Settings")
+# Settings section
+st.subheader("Settings")
 
 # List of companies
 companies = {
@@ -40,15 +40,17 @@ companies = {
     'NVIDIA': 'NVDA'
 }
 
-# Company selection
-selected_company = st.sidebar.selectbox('Select a company', list(companies.keys()))
-tickerSymbol = companies[selected_company]
+# Create three columns for settings
+col1, col2, col3 = st.columns([2,1,1])
 
-# Date range selection
-col1, col2 = st.sidebar.columns(2)
 with col1:
-    start_date = st.date_input('Start date', value=date.today() - timedelta(days=365))
+    selected_company = st.selectbox('Select a company', list(companies.keys()))
+    tickerSymbol = companies[selected_company]
+
 with col2:
+    start_date = st.date_input('Start date', value=date.today() - timedelta(days=365))
+
+with col3:
     end_date = st.date_input('End date', value=date.today())
 
 # Fetch data
@@ -84,5 +86,5 @@ else:
     st.error("No data available for the selected date range. Please try a different range.")
 
 # Footer
-st.sidebar.markdown("---")
-st.sidebar.info("Developed with ❤️ using Streamlit")
+st.markdown("---")
+st.info("Developed with ❤️ using Streamlit")
