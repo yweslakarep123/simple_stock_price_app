@@ -4,26 +4,31 @@ import pandas as pd
 from datetime import date, timedelta
 
 # Page configuration
-st.set_page_config(page_title="Simple Stock Price App", layout="wide")
+st.set_page_config(page_title="Simple Stock Price App", layout="wide", initial_sidebar_state="expanded")
 
 # Custom CSS
 st.markdown("""
 <style>
+body {
+    color: #FFFFFF;
+    background-color: #0E1117;
+}
 .big-font {
     font-size:50px !important;
     font-weight: bold;
-    color: #1E90FF;
+    color: #FF4B4B;
 }
-.stRadio > div {
-    flex-direction: row;
-    flex-wrap: wrap;
+.stSelectbox > div > div {
+    background-color: #262730;
+    color: #FFFFFF;
 }
-.stRadio label {
-    background-color: #F0F8FF;
-    padding: 5px 10px;
-    border-radius: 5px;
-    margin-right: 5px;
-    margin-bottom: 5px;
+.stDateInput > div > div > input {
+    background-color: #262730;
+    color: #FFFFFF;
+}
+.stSelectbox > div > div > div {
+    background-color: #0E1117;
+    color: #FFFFFF;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -31,8 +36,8 @@ st.markdown("""
 # Title
 st.markdown('<p class="big-font">Simple Stock Price App</p>', unsafe_allow_html=True)
 
-# Settings section
-st.subheader("Settings")
+# Settings
+st.sidebar.header("Settings")
 
 # List of companies
 companies = {
@@ -45,16 +50,13 @@ companies = {
     'NVIDIA': 'NVDA'
 }
 
-# Company selection using radio buttons
-selected_company = st.radio('Select a company', list(companies.keys()))
+# Company selection
+selected_company = st.sidebar.selectbox('Select a company', list(companies.keys()), key='company_select')
 tickerSymbol = companies[selected_company]
 
-# Date inputs
-col1, col2 = st.columns(2)
-with col1:
-    start_date = st.date_input('Start date', value=date.today() - timedelta(days=365))
-with col2:
-    end_date = st.date_input('End date', value=date.today())
+# Date range selection
+start_date = st.sidebar.date_input('Start date', value=date.today() - timedelta(days=365))
+end_date = st.sidebar.date_input('End date', value=date.today())
 
 # Fetch data
 @st.cache_data
@@ -89,5 +91,5 @@ else:
     st.error("No data available for the selected date range. Please try a different range.")
 
 # Footer
-st.markdown("---")
-st.info("Developed with ❤️ using Streamlit")
+st.sidebar.markdown("---")
+st.sidebar.info("Developed with ❤️ using Streamlit")
