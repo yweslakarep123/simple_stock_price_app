@@ -14,11 +14,16 @@ st.markdown("""
     font-weight: bold;
     color: #1E90FF;
 }
-.stSelectbox > div > div {
-    background-color: #F0F8FF;
+.stRadio > div {
+    flex-direction: row;
+    flex-wrap: wrap;
 }
-.stDateInput > div > div > input {
+.stRadio label {
     background-color: #F0F8FF;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-right: 5px;
+    margin-bottom: 5px;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -40,17 +45,15 @@ companies = {
     'NVIDIA': 'NVDA'
 }
 
-# Create three columns for settings
-col1, col2, col3 = st.columns([2,1,1])
+# Company selection using radio buttons
+selected_company = st.radio('Select a company', list(companies.keys()))
+tickerSymbol = companies[selected_company]
 
+# Date inputs
+col1, col2 = st.columns(2)
 with col1:
-    selected_company = st.selectbox('Select a company', list(companies.keys()))
-    tickerSymbol = companies[selected_company]
-
-with col2:
     start_date = st.date_input('Start date', value=date.today() - timedelta(days=365))
-
-with col3:
+with col2:
     end_date = st.date_input('End date', value=date.today())
 
 # Fetch data
